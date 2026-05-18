@@ -1,0 +1,39 @@
+name: Manual Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Target environment
+        required: true
+        type: choice
+        options:
+          - dev
+          - staging
+          - prod
+      dry_run:
+        description: Run deployment in dry-run mode
+        required: true
+        default: true
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deployment placeholder
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Starting manual deploy."
+          echo "Environment: ${{ inputs.environment }}"
+          echo "Dry run: ${{ inputs.dry_run }}"
+          echo "Replace this step with real deployment commands when environment setup is ready."
