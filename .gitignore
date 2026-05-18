@@ -1,0 +1,13 @@
+# Keep AI-related artifacts out of the main Coldrun repository
+ai/
+.ai/
+docs/ai/
+docs/discussions/
+plans/ai/
+*.ai.md
+*.prompt.md
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.vscode/
