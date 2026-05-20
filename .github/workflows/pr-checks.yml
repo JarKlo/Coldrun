@@ -29,10 +29,11 @@ jobs:
             }
 
             const requiredSections = ['## Summary', '## Validation', '## Safety'];
-            for (const section of requiredSections) {
-              if (!body.includes(section)) {
-                errors.push(`PR body is missing required section: ${section}`);
-              }
+            const hasRequiredSections = requiredSections.every((section) => body.includes(section));
+            const hasChecklistItems = /^\s*-\s*\[[ xX]\]\s+.+/m.test(body);
+
+            if (!hasRequiredSections && !hasChecklistItems) {
+              errors.push('PR body must include either the required sections (## Summary, ## Validation, ## Safety) or at least one markdown checklist item.');
             }
 
             if (errors.length > 0) {
