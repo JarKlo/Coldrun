@@ -5,6 +5,7 @@ using Coldrun.Modules.Trucks.Endpoints;
 using Coldrun.Modules.Trucks.Policies;
 using Coldrun.Modules.Trucks.Services;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Scalar.AspNetCore;
 using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -36,6 +37,9 @@ builder.Services.AddHealthChecks()
 builder.Services.AddSingleton<InMemoryTruckStore>();
 builder.Services.AddSingleton<TruckStatusTransitionPolicy>();
 builder.Services.AddSingleton<TruckService>();
+
+// ── OpenAPI ─────────────────────────────────────────────────────
+builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
@@ -80,6 +84,14 @@ if (coldrunOptions.Modules.Trucks.Enabled)
 {
     app.MapTruckEndpoints();
 }
+
+// ── OpenAPI & Scalar UI ─────────────────────────────────────────
+app.MapOpenApi();
+app.MapScalarApiReference(options =>
+{
+    options.Title = "Coldrun ERP API";
+    options.Theme = ScalarTheme.Default;
+});
 
 app.Run();
 
