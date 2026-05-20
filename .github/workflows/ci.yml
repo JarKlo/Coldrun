@@ -1,0 +1,80 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Detect repository stacks
+        id: detect
+        shell: bash
+        run: |
+          set -euo pipefail
+          has_dotnet=false
+          has_node=false
+          has_python=false
+            has_dotnet=true
+          fi
+
+          if [ -f package.json ]; then
+            has_node=true
+            has_python=true
+          echo "has_node=${has_node}" >> "$GITHUB_OUTPUT"
+          echo "has_python=${has_python}" >> "$GITHUB_OUTPUT"
+        if: steps.detect.outputs.has_dotnet == 'true'
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Build and test .NET
+        if: steps.detect.outputs.has_dotnet == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -t solutions < <(find . -type f -name "*.sln")
+          mapfile -t projects < <(find . -type f -name "*.csproj")
+
+          if [ "${#solutions[@]}" -gt 0 ]; then
+            for sln in "${solutions[@]}"; do
+              dotnet restore "$sln"
+              dotnet build "$sln" --configuration Release --no-restore
+            done
+          elif [ "${#projects[@]}" -gt 0 ]; then
+            for csproj in "${projects[@]}"; do
+              dotnet restore "$csproj"
+              dotnet build "$csproj" --configuration Release --no-restore
+            done
+          fi
+
+          mapfile -t test_projects < <(find . -type f -name "*Test*.csproj" -o -name "*Tests*.csproj")
+          if [ "${#test_projects[@]}" -gt 0 ]; then
+            for test_proj in "${test_projects[@]}"; do
+              dotnet test "$test_proj" --configuration Release --no-build --verbosity normal
+            done
+          else
+            echo "No .NET test projects detected."
+          fi
+
+      - name: Setup Node.js
+        if: steps.detect.outputs.has_node == 'true'
+        if: steps.detect.outputs.has_node == 'true'
+        if: steps.detect.outputs.has_python == 'true'
+        if: steps.detect.outputs.has_python == 'true'
+        if: steps.detect.outputs.has_dotnet != 'true' && steps.detect.outputs.has_node != 'true' && steps.detect.outputs.has_python != 'true'
+        run: echo "No .NET, Node.js, or Python project files detected yet. CI is configured and ready for future code."
