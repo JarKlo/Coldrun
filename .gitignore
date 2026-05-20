@@ -11,3 +11,7 @@ plans/ai/
 .DS_Store
 Thumbs.db
 .vscode/
+
+# Build artifacts
+**/bin/
+**/obj/
