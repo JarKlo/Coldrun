@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Coldrun.Modules.Trucks/Coldrun.Modules.Trucks.csproj" />
+    <Project Path="src/Coldrun/Coldrun.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Coldrun.Tests/Coldrun.Tests.csproj" />
+  </Folder>
+</Solution>
