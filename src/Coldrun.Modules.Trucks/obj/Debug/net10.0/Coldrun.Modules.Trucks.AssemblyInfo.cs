@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Coldrun.Modules.Trucks")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f0f8cf51ecd002103304030fc5b368ff8ae16f33")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bb45de4a851551b805ed54b3e87b649ad76c0f3e")]
 [assembly: System.Reflection.AssemblyProductAttribute("Coldrun.Modules.Trucks")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Coldrun.Modules.Trucks")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

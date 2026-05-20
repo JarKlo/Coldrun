@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "MTo9mW752oA=",
+  "dgSpecHash": "txv5odRpkYM=",
   "success": true,
-  "projectFilePath": "c:\\Users\\jaros\\Documents\\Projects\\Coldrun\\src\\Coldrun.Modules.Trucks\\Coldrun.Modules.Trucks.csproj",
+  "projectFilePath": "/home/runner/work/Coldrun/Coldrun/src/Coldrun.Modules.Trucks/Coldrun.Modules.Trucks.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }
