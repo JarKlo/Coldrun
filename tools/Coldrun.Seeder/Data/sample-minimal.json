@@ -1,0 +1,7 @@
+{
+  "Trucks": [
+    { "Code": "TRK001", "Name": "Volvo FH16", "Status": "Out Of Service" },
+    { "Code": "TRK002", "Name": "Scania R500", "Status": "Loading" },
+    { "Code": "TRK003", "Name": "MAN TGX", "Status": "To Job" }
+  ]
+}

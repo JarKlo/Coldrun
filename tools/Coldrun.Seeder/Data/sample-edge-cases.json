@@ -1,0 +1,7 @@
+{
+  "Trucks": [
+    { "Code": "A1", "Name": "X", "Status": "Out Of Service", "Description": "Minimal valid truck" },
+    { "Code": "TRK999", "Name": "Very Long Truck Name For Testing Boundary Conditions And Edge Cases", "Status": "At Job", "Description": "This truck has an unusually long name to test the API's handling of long string values in the Name field" },
+    { "Code": "ABC123XYZ", "Name": "Mixed Case Code Test", "Status": "Returning", "Description": "Tests alphanumeric code with mixed letters and numbers" }
+  ]
+}

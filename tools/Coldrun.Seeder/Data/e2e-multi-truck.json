@@ -1,0 +1,24 @@
+{
+  "Scenarios": [
+    {
+      "Id": "SCENARIO-050",
+      "Name": "Multiple trucks in parallel",
+      "Description": "Tests multi-truck ID resolution and independent transitions",
+      "Setup": {
+        "Trucks": [
+          { "Code": "E2E50A", "Name": "Truck A", "Status": "Out Of Service" },
+          { "Code": "E2E50B", "Name": "Truck B", "Status": "Out Of Service" },
+          { "Code": "E2E50C", "Name": "Truck C", "Status": "Out Of Service" }
+        ]
+      },
+      "Steps": [
+        { "StepNumber": 1, "Action": "TransitionStatus", "TruckCode": "E2E50A", "TargetStatus": "Loading", "ExpectedOutcome": { "HttpStatusCode": 200, "ResultStatus": "Loading" } },
+        { "StepNumber": 2, "Action": "TransitionStatus", "TruckCode": "E2E50B", "TargetStatus": "Loading", "ExpectedOutcome": { "HttpStatusCode": 200, "ResultStatus": "Loading" } },
+        { "StepNumber": 3, "Action": "TransitionStatus", "TruckCode": "E2E50C", "TargetStatus": "Loading", "ExpectedOutcome": { "HttpStatusCode": 200, "ResultStatus": "Loading" } },
+        { "StepNumber": 4, "Action": "TransitionStatus", "TruckCode": "E2E50A", "TargetStatus": "To Job", "ExpectedOutcome": { "HttpStatusCode": 200, "ResultStatus": "To Job" } },
+        { "StepNumber": 5, "Action": "TransitionStatus", "TruckCode": "E2E50B", "TargetStatus": "To Job", "ExpectedOutcome": { "HttpStatusCode": 200, "ResultStatus": "To Job" } },
+        { "StepNumber": 6, "Action": "TransitionStatus", "TruckCode": "E2E50C", "TargetStatus": "To Job", "ExpectedOutcome": { "HttpStatusCode": 200, "ResultStatus": "To Job" } }
+      ]
+    }
+  ]
+}

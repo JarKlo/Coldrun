@@ -1,0 +1,19 @@
+{
+  "Trucks": [
+    { "Code": "TRK001", "Name": "Volvo FH16", "Status": "Out Of Service", "Description": "Heavy duty truck for long haulage" },
+    { "Code": "TRK002", "Name": "Scania R500", "Status": "Out Of Service", "Description": "Premium touring truck" },
+    { "Code": "TRK003", "Name": "MAN TGX 18.500", "Status": "Out Of Service", "Description": "Efficient long-haul tractor" },
+    { "Code": "TRK004", "Name": "DAF XF", "Status": "Loading", "Description": "Versatile distribution truck" },
+    { "Code": "TRK005", "Name": "Mercedes Actros", "Status": "Loading", "Description": "Flagship heavy truck" },
+    { "Code": "TRK006", "Name": "Iveco S-Way", "Status": "Loading", "Description": "Comfortable long-distance truck" },
+    { "Code": "TRK007", "Name": "Renault T", "Status": "To Job", "Description": "Reliable construction truck" },
+    { "Code": "TRK008", "Name": "Ford F-MAX", "Status": "To Job", "Description": "Powerful freight hauler" },
+    { "Code": "TRK009", "Name": "Peterbilt 579", "Status": "To Job", "Description": "American long-haul classic" },
+    { "Code": "TRK010", "Name": "Kenworth T680", "Status": "At Job", "Description": "Aerodynamic efficiency leader" },
+    { "Code": "TRK011", "Name": "Freightliner Cascadia", "Status": "At Job", "Description": "Best-selling North American truck" },
+    { "Code": "TRK012", "Name": "Western Star 5700XE", "Status": "At Job", "Description": "Heavy-haul workhorse" },
+    { "Code": "TRK013", "Name": "Mack Anthem", "Status": "Returning", "Description": "Durability champion" },
+    { "Code": "TRK014", "Name": "International LoneStar", "Status": "Returning", "Description": "Premium sleeper truck" },
+    { "Code": "TRK015", "Name": "Hino 700", "Status": "Returning", "Description": "Medium-heavy class workhorse" }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "Scenarios": [
+    {
+      "Id": "SCENARIO-030",
+      "Name": "Self-transition: Loading → Loading",
+      "Setup": {
+        "Trucks": [
+          { "Code": "E2E030", "Name": "Self-Transition Truck", "Status": "Loading" }
+        ]
+      },
+      "Steps": [
+        { "StepNumber": 1, "Action": "TransitionStatus", "TruckCode": "E2E030", "TargetStatus": "Loading", "ExpectedOutcome": { "HttpStatusCode": 200, "ResultStatus": "Loading" } }
+      ]
+    },
+    {
+      "Id": "SCENARIO-031",
+      "Name": "Self-transition: To Job → To Job",
+      "Setup": {
+        "Trucks": [
+          { "Code": "E2E031", "Name": "Self-Transition Truck", "Status": "To Job" }
+        ]
+      },
+      "Steps": [
+        { "StepNumber": 1, "Action": "TransitionStatus", "TruckCode": "E2E031", "TargetStatus": "To Job", "ExpectedOutcome": { "HttpStatusCode": 200, "ResultStatus": "To Job" } }
+      ]
+    },
+    {
+      "Id": "SCENARIO-032",
+      "Name": "Self-transition: OOS → OOS",
+      "Setup": {
+        "Trucks": [
+          { "Code": "E2E032", "Name": "Self-Transition Truck", "Status": "Out Of Service" }
+        ]
+      },
+      "Steps": [
+        { "StepNumber": 1, "Action": "TransitionStatus", "TruckCode": "E2E032", "TargetStatus": "Out Of Service", "ExpectedOutcome": { "HttpStatusCode": 200, "ResultStatus": "Out Of Service" } }
+      ]
+    }
+  ]
+}
