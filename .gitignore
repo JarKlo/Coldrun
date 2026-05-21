@@ -1,4 +1,4 @@
-# Keep AI-related artifacts out of the main Coldrun repository
+﻿# Keep AI-related artifacts out of the main Coldrun repository
 ai/
 .ai/
 docs/ai/
@@ -15,3 +15,21 @@ Thumbs.db
 # Build artifacts
 **/bin/
 **/obj/
+
+# Visual Studio local workspace
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Local settings / secrets
+.env
+.env.*
+local.settings.json
+appsettings.*.Development.json
+
+# SQL / local DB artifacts
+*.db
+*.db-journal
+*.sqlite

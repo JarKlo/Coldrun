@@ -1,0 +1,76 @@
+{
+  "Scenarios": [
+    {
+      "Id": "SCENARIO-010",
+      "Name": "Invalid: Loading → At Job (skip To Job)",
+      "Setup": {
+        "Trucks": [
+          { "Code": "E2E010", "Name": "Invalid Transition Truck", "Status": "Loading" }
+        ]
+      },
+      "Steps": [
+        { "StepNumber": 1, "Action": "TransitionStatus", "TruckCode": "E2E010", "TargetStatus": "At Job", "ExpectedOutcome": { "HttpStatusCode": 400 } }
+      ]
+    },
+    {
+      "Id": "SCENARIO-011",
+      "Name": "Invalid: Loading → Returning",
+      "Setup": {
+        "Trucks": [
+          { "Code": "E2E011", "Name": "Invalid Transition Truck", "Status": "Loading" }
+        ]
+      },
+      "Steps": [
+        { "StepNumber": 1, "Action": "TransitionStatus", "TruckCode": "E2E011", "TargetStatus": "Returning", "ExpectedOutcome": { "HttpStatusCode": 400 } }
+      ]
+    },
+    {
+      "Id": "SCENARIO-012",
+      "Name": "Invalid: To Job → Loading",
+      "Setup": {
+        "Trucks": [
+          { "Code": "E2E012", "Name": "Invalid Transition Truck", "Status": "To Job" }
+        ]
+      },
+      "Steps": [
+        { "StepNumber": 1, "Action": "TransitionStatus", "TruckCode": "E2E012", "TargetStatus": "Loading", "ExpectedOutcome": { "HttpStatusCode": 400 } }
+      ]
+    },
+    {
+      "Id": "SCENARIO-013",
+      "Name": "Invalid: To Job → Returning",
+      "Setup": {
+        "Trucks": [
+          { "Code": "E2E013", "Name": "Invalid Transition Truck", "Status": "To Job" }
+        ]
+      },
+      "Steps": [
+        { "StepNumber": 1, "Action": "TransitionStatus", "TruckCode": "E2E013", "TargetStatus": "Returning", "ExpectedOutcome": { "HttpStatusCode": 400 } }
+      ]
+    },
+    {
+      "Id": "SCENARIO-014",
+      "Name": "Invalid: At Job → Loading",
+      "Setup": {
+        "Trucks": [
+          { "Code": "E2E014", "Name": "Invalid Transition Truck", "Status": "At Job" }
+        ]
+      },
+      "Steps": [
+        { "StepNumber": 1, "Action": "TransitionStatus", "TruckCode": "E2E014", "TargetStatus": "Loading", "ExpectedOutcome": { "HttpStatusCode": 400 } }
+      ]
+    },
+    {
+      "Id": "SCENARIO-015",
+      "Name": "Invalid: At Job → To Job",
+      "Setup": {
+        "Trucks": [
+          { "Code": "E2E015", "Name": "Invalid Transition Truck", "Status": "At Job" }
+        ]
+      },
+      "Steps": [
+        { "StepNumber": 1, "Action": "TransitionStatus", "TruckCode": "E2E015", "TargetStatus": "To Job", "ExpectedOutcome": { "HttpStatusCode": 400 } }
+      ]
+    }
+  ]
+}

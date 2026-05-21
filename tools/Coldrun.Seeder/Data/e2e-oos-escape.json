@@ -1,0 +1,31 @@
+{
+  "Scenarios": [
+    {
+      "Id": "SCENARIO-020",
+      "Name": "OOS escape: Loading → OOS → To Job",
+      "Description": "Tests that OOS can be used as an escape hatch from any status",
+      "Setup": {
+        "Trucks": [
+          { "Code": "E2E020", "Name": "OOS Escape Truck", "Status": "Loading" }
+        ]
+      },
+      "Steps": [
+        { "StepNumber": 1, "Action": "TransitionStatus", "TruckCode": "E2E020", "TargetStatus": "Out Of Service", "ExpectedOutcome": { "HttpStatusCode": 200, "ResultStatus": "Out Of Service" } },
+        { "StepNumber": 2, "Action": "TransitionStatus", "TruckCode": "E2E020", "TargetStatus": "To Job", "ExpectedOutcome": { "HttpStatusCode": 200, "ResultStatus": "To Job" } }
+      ]
+    },
+    {
+      "Id": "SCENARIO-021",
+      "Name": "OOS escape: At Job → OOS → Loading",
+      "Setup": {
+        "Trucks": [
+          { "Code": "E2E021", "Name": "OOS Escape Truck", "Status": "At Job" }
+        ]
+      },
+      "Steps": [
+        { "StepNumber": 1, "Action": "TransitionStatus", "TruckCode": "E2E021", "TargetStatus": "Out Of Service", "ExpectedOutcome": { "HttpStatusCode": 200, "ResultStatus": "Out Of Service" } },
+        { "StepNumber": 2, "Action": "TransitionStatus", "TruckCode": "E2E021", "TargetStatus": "Loading", "ExpectedOutcome": { "HttpStatusCode": 200, "ResultStatus": "Loading" } }
+      ]
+    }
+  ]
+}

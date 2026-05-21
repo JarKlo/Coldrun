@@ -1,0 +1,38 @@
+{
+  "Scenarios": [
+    {
+      "Id": "SCENARIO-001",
+      "Name": "Full lifecycle: Loading → To Job → At Job → Returning → Loading",
+      "Description": "Tests the complete operational cycle starting from Loading status",
+      "Setup": {
+        "Trucks": [
+          { "Code": "E2E001", "Name": "Lifecycle Test Truck", "Status": "Out Of Service", "Description": "Created for E2E scenario" }
+        ]
+      },
+      "Steps": [
+        { "StepNumber": 1, "Action": "TransitionStatus", "TruckCode": "E2E001", "TargetStatus": "Loading", "ExpectedOutcome": { "HttpStatusCode": 200, "ResultStatus": "Loading" } },
+        { "StepNumber": 2, "Action": "TransitionStatus", "TruckCode": "E2E001", "TargetStatus": "To Job", "ExpectedOutcome": { "HttpStatusCode": 200, "ResultStatus": "To Job" } },
+        { "StepNumber": 3, "Action": "TransitionStatus", "TruckCode": "E2E001", "TargetStatus": "At Job", "ExpectedOutcome": { "HttpStatusCode": 200, "ResultStatus": "At Job" } },
+        { "StepNumber": 4, "Action": "TransitionStatus", "TruckCode": "E2E001", "TargetStatus": "Returning", "ExpectedOutcome": { "HttpStatusCode": 200, "ResultStatus": "Returning" } },
+        { "StepNumber": 5, "Action": "TransitionStatus", "TruckCode": "E2E001", "TargetStatus": "Loading", "ExpectedOutcome": { "HttpStatusCode": 200, "ResultStatus": "Loading" } }
+      ]
+    },
+    {
+      "Id": "SCENARIO-040",
+      "Name": "Full cycle from OOS ending with OOS",
+      "Description": "Tests complete cycle: OOS → Loading → To Job → At Job → Returning → OOS",
+      "Setup": {
+        "Trucks": [
+          { "Code": "E2E040", "Name": "OOS Cycle Truck", "Status": "Out Of Service", "Description": "Created for E2E scenario" }
+        ]
+      },
+      "Steps": [
+        { "StepNumber": 1, "Action": "TransitionStatus", "TruckCode": "E2E040", "TargetStatus": "Loading", "ExpectedOutcome": { "HttpStatusCode": 200, "ResultStatus": "Loading" } },
+        { "StepNumber": 2, "Action": "TransitionStatus", "TruckCode": "E2E040", "TargetStatus": "To Job", "ExpectedOutcome": { "HttpStatusCode": 200, "ResultStatus": "To Job" } },
+        { "StepNumber": 3, "Action": "TransitionStatus", "TruckCode": "E2E040", "TargetStatus": "At Job", "ExpectedOutcome": { "HttpStatusCode": 200, "ResultStatus": "At Job" } },
+        { "StepNumber": 4, "Action": "TransitionStatus", "TruckCode": "E2E040", "TargetStatus": "Returning", "ExpectedOutcome": { "HttpStatusCode": 200, "ResultStatus": "Returning" } },
+        { "StepNumber": 5, "Action": "TransitionStatus", "TruckCode": "E2E040", "TargetStatus": "Out Of Service", "ExpectedOutcome": { "HttpStatusCode": 200, "ResultStatus": "Out Of Service" } }
+      ]
+    }
+  ]
+}
