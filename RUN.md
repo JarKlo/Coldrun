@@ -1,159 +1,175 @@
-# Coldrun ERP — Running the Projects
+# Coldrun ERP - Runbook
+
+Last updated: 2026-05-27
+
+## Purpose
+
+This runbook explains how to run, test, and operate the current Coldrun implementation:
+
+- API host (Minimal API, .NET 10)
+- Trucks module (CRUD + filtering/sorting + status transitions)
+- Operational endpoints (health, metrics, OpenAPI, Scalar)
+- Seeder CLI (data seed + E2E scenario execution)
 
 ## Prerequisites
 
-- **.NET 10 SDK** — install from https://dotnet.microsoft.com/download/dotnet/10.0
-- Verify: `dotnet --version` should output `10.0.x`
+- .NET 10 SDK installed: https://dotnet.microsoft.com/download/dotnet/10.0
+- Verify SDK:
 
----
-
-## Project Structure
-
+```bash
+dotnet --version
 ```
+
+Expected output starts with `10.0`.
+
+## Project Layout
+
+```text
 Coldrun/
-├── src/
-│   ├── Coldrun/                      # Main API host (Minimal APIs)
-│   └── Coldrun.Modules.Trucks/       # Truck module (domain, endpoints, services)
-├── tests/
-│   └── Coldrun.Tests/                # xUnit unit tests
-├── tools/
-│   └── Coldrun.Seeder/               # Data seeding & E2E scenario runner (CLI)
-└── Coldrun.slnx                      # Solution file
+|-- src/
+|   |-- Coldrun/                    # API host
+|   `-- Coldrun.Modules.Trucks/     # Truck module
+|-- tests/
+|   `-- Coldrun.Tests/              # Unit tests (xUnit)
+|-- tools/
+|   `-- Coldrun.Seeder/             # Seeder + E2E scenario runner
+|-- docs/
+|   |-- requirements.md
+|   |-- analysis-phase2-plus-mvp-decisions.md
+|   |-- current-implementation.md
+|   `-- api-reference.md
+`-- Coldrun.slnx
 ```
 
----
+## Start The API
 
-## 1. Running the API
-
-From the `Coldrun/` directory:
+From the repository root:
 
 ```bash
 dotnet run --project src/Coldrun/Coldrun.csproj
 ```
 
-The API starts on **http://localhost:5000** by default.
+Default base URL: `http://localhost:5000`
 
-### Endpoints
+### Runtime Endpoints
 
 | Endpoint | Description |
-|----------|-------------|
-| `http://localhost:5000/health/live` | Liveness health check |
-| `http://localhost:5000/health/ready` | Readiness health check |
-| `http://localhost:5000/metrics` | Request metrics (JSON) |
-| `http://localhost:5000/api/trucks` | Truck CRUD (POST, GET, PUT, DELETE) |
-| `http://localhost:5000/openapi/v1.json` | OpenAPI spec |
-| `http://localhost:5000/scalar/v1` | Scalar API documentation UI |
+|---|---|
+| `GET /health/live` | Liveness health check |
+| `GET /health/ready` | Readiness health check (currently in-memory store accessibility) |
+| `GET /metrics` | In-process request metrics JSON |
+| `GET /openapi/v1.json` | OpenAPI document |
+| `GET /scalar/v1` | Scalar API UI |
+| `GET/POST/PUT/DELETE /api/trucks` | Trucks API |
 
----
+## Run Tests
 
-## 2. Running Unit Tests
-
-From the `Coldrun/` directory:
+Run unit tests:
 
 ```bash
 dotnet test tests/Coldrun.Tests/Coldrun.Tests.csproj
 ```
 
-With coverage:
+Run with coverage collector:
 
 ```bash
 dotnet test tests/Coldrun.Tests/Coldrun.Tests.csproj --collect:"XPlat Code Coverage"
 ```
 
----
+## Seeder CLI
 
-## 3. Running the Data Seeder
+The seeder requires a running API and supports two modes:
 
-The seeder populates the API with truck data from JSON files. The API must be running first.
+- data seeding mode (`--file`)
+- scenario mode (`--scenario`)
 
-### Basic Usage
+Exactly one of `--file` or `--scenario` must be provided.
+
+### Seed Data Mode
 
 ```bash
-# Seed from a JSON file
 dotnet run --project tools/Coldrun.Seeder/Coldrun.Seeder.csproj -- --file tools/Coldrun.Seeder/Data/sample-minimal.json
+```
 
-# Reset (delete all trucks) before seeding
+Seed after full reset:
+
+```bash
 dotnet run --project tools/Coldrun.Seeder/Coldrun.Seeder.csproj -- --file tools/Coldrun.Seeder/Data/sample-minimal.json --reset
 ```
 
-### Custom Base URL
-
-```bash
-# Via CLI argument
-dotnet run --project tools/Coldrun.Seeder/Coldrun.Seeder.csproj -- --file tools/Coldrun.Seeder/Data/sample-minimal.json --baseUrl http://localhost:5000
-
-# Via environment variable
-set COLDRUN_API_URL=http://localhost:5000
-dotnet run --project tools/Coldrun.Seeder/Coldrun.Seeder.csproj -- --file tools/Coldrun.Seeder/Data/sample-minimal.json
-```
-
-### Available Seed Data Files
-
-| File | Description |
-|------|-------------|
-| `Data/sample-minimal.json` | Minimal truck data (2 trucks) |
-| `Data/sample-all-statuses.json` | Trucks in all possible statuses |
-| `Data/sample-edge-cases.json` | Edge case truck configurations |
-
----
-
-## 4. Running E2E Scenario Tests
-
-The seeder doubles as an E2E scenario runner. Scenarios define ordered sequences of truck creation and status transitions with validation.
-
-### Run All Scenarios from a File
-
-```bash
-dotnet run --project tools/Coldrun.Seeder/Coldrun.Seeder.csproj -- --scenario tools/Coldrun.Seeder/Data/e2e-self-transitions.json
-```
-
-### Run with Reset
+### Scenario Mode (E2E-like Validation)
 
 ```bash
 dotnet run --project tools/Coldrun.Seeder/Coldrun.Seeder.csproj -- --scenario tools/Coldrun.Seeder/Data/e2e-full-lifecycle.json --reset
 ```
 
-### Available E2E Scenario Files
+### Base URL Resolution
 
-| File | Description |
-|------|-------------|
-| `Data/e2e-self-transitions.json` | FSM self-transition validation |
-| `Data/e2e-full-lifecycle.json` | Complete truck lifecycle scenarios |
-| `Data/e2e-invalid-transitions.json` | Invalid transition rejection tests |
-| `Data/e2e-multi-truck.json` | Multi-truck parallel scenarios |
-| `Data/e2e-oos-escape.json` | Out-of-service escape scenarios |
+The seeder resolves API URL in this order:
 
-### Scenario Output
+1. `COLDRUN_API_URL` environment variable (if set)
+2. `--baseUrl` argument (if provided)
+3. default `http://localhost:5000`
 
-Each scenario reports:
-- **PASS/FAIL** per step
-- **PASS/FAIL** per scenario
-- Summary of passed vs. failed steps
-
----
-
-## 5. CI Pipeline
-
-The GitHub Actions CI pipeline (`.github/workflows/ci.yml`) runs on every push and PR:
-
-1. `dotnet restore` — restore dependencies
-2. `dotnet build --configuration Release` — build all projects
-3. `dotnet test --configuration Release` — run unit tests
-
----
-
-## Quick Reference
+Example:
 
 ```bash
-# Start API
+set COLDRUN_API_URL=http://localhost:5000
+dotnet run --project tools/Coldrun.Seeder/Coldrun.Seeder.csproj -- --file tools/Coldrun.Seeder/Data/sample-all-statuses.json
+```
+
+### Available Seed Files
+
+| File | Purpose |
+|---|---|
+| `tools/Coldrun.Seeder/Data/sample-minimal.json` | Small baseline data set |
+| `tools/Coldrun.Seeder/Data/sample-all-statuses.json` | One or more trucks in all statuses |
+| `tools/Coldrun.Seeder/Data/sample-edge-cases.json` | Boundary-style data cases |
+
+### Available Scenario Files
+
+| File | Purpose |
+|---|---|
+| `tools/Coldrun.Seeder/Data/e2e-self-transitions.json` | Self-transition policy behavior |
+| `tools/Coldrun.Seeder/Data/e2e-full-lifecycle.json` | Full lifecycle transitions |
+| `tools/Coldrun.Seeder/Data/e2e-invalid-transitions.json` | Invalid transition rejections |
+| `tools/Coldrun.Seeder/Data/e2e-multi-truck.json` | Multi-truck execution paths |
+| `tools/Coldrun.Seeder/Data/e2e-oos-escape.json` | Out-of-service escape paths |
+
+## Operational Behavior Notes
+
+- `X-Correlation-ID` is propagated/generated per request and returned in response headers.
+- Global exception middleware converts known exception types to stable HTTP responses with JSON `{ "error": "..." }`.
+- Truck endpoints are protected by a fixed-window rate limiter configured in `appsettings.json`.
+- Metrics are in-memory and reset on process restart.
+
+## CI Workflows
+
+Current workflows under `.github/workflows/`:
+
+- `ci.yml`: restore, build, test on push to `main` and on pull requests
+- `pr-checks.yml`: validates PR title/body structure for non-draft PRs
+- `manual-deploy.yml`: workflow-dispatch placeholder for manual deploy pipeline
+
+## Documentation Map
+
+- High-level implementation details: `docs/current-implementation.md`
+- API contract and examples: `docs/api-reference.md`
+- Requirements baseline: `docs/requirements.md`
+- Architecture and phase analysis: `docs/analysis-phase2-plus-mvp-decisions.md`
+
+## Quick Command Reference
+
+```bash
+# Run API
 dotnet run --project src/Coldrun/Coldrun.csproj
 
-# Run tests (separate terminal)
+# Run tests
 dotnet test tests/Coldrun.Tests/Coldrun.Tests.csproj
 
-# Seed data (API must be running)
+# Seed baseline data
 dotnet run --project tools/Coldrun.Seeder/Coldrun.Seeder.csproj -- --file tools/Coldrun.Seeder/Data/sample-minimal.json --reset
 
-# Run E2E scenarios (API must be running)
+# Execute lifecycle scenario
 dotnet run --project tools/Coldrun.Seeder/Coldrun.Seeder.csproj -- --scenario tools/Coldrun.Seeder/Data/e2e-full-lifecycle.json --reset
 ```
